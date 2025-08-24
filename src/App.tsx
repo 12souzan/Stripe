@@ -30,6 +30,8 @@ function App() {
     if (method === 'card') {
       try {
         const payload = {
+          successUrl:"http://localhost:5173/success",
+          cancelUrl:"http://localhost:5173/canceled",
           productName: "adsc",
           amount: 20,
           quantity: 3,
@@ -63,7 +65,7 @@ function App() {
           },
         };
         console.log("Sending payload to backend:", payload);
-        const response = await fetch(`http://130.61.17.86:8080/api/stripe/create-checkout-session2`, {
+        const response = await fetch(`https://130.61.17.86:8080/api/stripe/create-checkout-session`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
@@ -76,12 +78,12 @@ function App() {
         const session = await response.json();
         console.log("Checkout session response:", session);
 
-        if (!session.url) {
+        if (!session.checkoutUrl) {
           console.error("No checkout URL returned from backend.");
           return;
         }
         console.log("Redirecting to Stripe Checkout URL...");
-        window.location.href = session.url;
+        window.location.href = session.checkoutUrl;
       } catch (err) {
         console.error("Payment flow failed:", err);
       }
@@ -93,16 +95,12 @@ function App() {
           amount: 2,
           currency: "USD",
           invoice: "invoice1",
-          externalId: 111,
-          successCallbackUrl: "http://localhost:8089/payment/success-callback",
-          failureCallbackUrl: "http://localhost:8089/payment/failure-callback",
-          successRedirectUrl: "http://localhost:8089/payment/success-redirect",
-          failureRedirectUrl: "http://localhost:8089/payment/failuer-redirect"
+          externalId: 114,
         };
 
         console.log("Sending WHISH payload to backend:", payload);
 
-        const response = await fetch(`http://130.61.17.86:8080/api/whish/create-checkout-session`, {
+        const response = await fetch(`https://130.61.17.86:8080/api/whish/create-checkout-session`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
@@ -118,13 +116,13 @@ function App() {
         const session = await response.json();
         console.log("WHISH checkout session response:", session);
 
-        if (!session.url) {
+        if (!session.data.collectUrl) {
           console.error("No checkout URL returned from WHISH backend.");
           return;
         }
 
         console.log("Redirecting to WHISH Checkout URL...");
-        window.location.href = session.url;
+        window.location.href = session.data.collectUrl;
       } catch (err) {
         console.error("WHISH Payment flow failed:", err);
       }
