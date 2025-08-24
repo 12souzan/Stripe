@@ -65,7 +65,7 @@ function App() {
           },
         };
         console.log("Sending payload to backend:", payload);
-        const response = await fetch(`https://130.61.17.86:8080/api/stripe/create-checkout-session`, {
+        const response = await fetch(`http://130.61.17.86:8080/api/stripe/create-checkout-session`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
@@ -100,7 +100,7 @@ function App() {
 
         console.log("Sending WHISH payload to backend:", payload);
 
-        const response = await fetch(`https://130.61.17.86:8080/api/whish/create-checkout-session`, {
+        const response = await fetch(`http://130.61.17.86:8080/api/whish/create-checkout-session`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
