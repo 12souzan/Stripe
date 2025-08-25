@@ -94,7 +94,7 @@ function App() {
           amount: 2,
           currency: "USD",
           invoice: "invoice1",
-          externalId: 115,
+          externalId: 116,
         };
 
         console.log("Sending WHISH payload to backend:", payload);
