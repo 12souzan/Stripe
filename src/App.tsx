@@ -4,10 +4,9 @@ import PaymentMethodSelection from './components/PaymentSelection'
 import { product } from './utils/dummyData'
 import CardPayment from './components/CardPayment'
 import CashPayment from './components/CashPayment'
-import { loadStripe } from '@stripe/stripe-js'
 import Completion from './components/Completion'
 
-type Screen = 'selection' | 'card-payment' | 'cash-payment' | 'whish-payment' | 'success' | 'home'
+type Screen = 'selection' | 'card-payment' | 'cash-payment' | 'whish-payment' | 'success' | 'home' | 'canceled'
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('selection')
@@ -30,8 +29,8 @@ function App() {
     if (method === 'card') {
       try {
         const payload = {
-          successUrl:"http://localhost:5173/success",
-          cancelUrl:"http://localhost:5173/canceled",
+          successUrl: 'http://localhost:5173/?success=true',
+          cancelUrl: 'http://localhost:5173/?canceled=true',
           productName: "adsc",
           amount: 20,
           quantity: 3,
@@ -95,7 +94,7 @@ function App() {
           amount: 2,
           currency: "USD",
           invoice: "invoice1",
-          externalId: 114,
+          externalId: 115,
         };
 
         console.log("Sending WHISH payload to backend:", payload);
@@ -137,7 +136,8 @@ function App() {
   }
 
   const restToHome = () => {
-    setCurrentScreen('home')
+    // setCurrentScreen('home')
+    window.location.href = '/'
   }
 
   if (currentScreen === 'selection') {
@@ -163,6 +163,9 @@ function App() {
 
   if (currentScreen === 'success') {
     return <Completion onBack={restToHome} />
+  }
+    if (currentScreen === 'canceled') {
+    return <h2 className="text-2xl font-bold text-white mb-4">Payment canceled!</h2>
   }
 
   return null
